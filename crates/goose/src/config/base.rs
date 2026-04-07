@@ -398,7 +398,7 @@ impl Config {
     }
 
     pub fn clear(&self) -> Result<(), ConfigError> {
-        Ok(std::fs::remove_file(&self.write_path())?)
+        Ok(std::fs::remove_file(self.write_path())?)
     }
 
     pub fn path(&self) -> String {
@@ -1826,7 +1826,7 @@ mod tests {
         assert!(extensions.contains_key("ext_b"));
         // ext_a should be unchanged
         let a = extensions.get("ext_a").unwrap().as_mapping().unwrap();
-        assert_eq!(a.get("enabled").unwrap().as_bool().unwrap(), true);
+        assert!(a.get("enabled").unwrap().as_bool().unwrap());
     }
 
     #[test]
@@ -1879,7 +1879,7 @@ mod tests {
         let my_ext = extensions.get("my_ext").unwrap().as_mapping().unwrap();
 
         // enabled should be overridden to false
-        assert_eq!(my_ext.get("enabled").unwrap().as_bool().unwrap(), false);
+        assert!(!my_ext.get("enabled").unwrap().as_bool().unwrap());
         // Other fields should be preserved
         assert_eq!(my_ext.get("type").unwrap().as_str().unwrap(), "builtin");
         assert_eq!(
@@ -1973,7 +1973,7 @@ extensions:
 
         // developer should be disabled (user config overrides system)
         let dev = extensions.get("developer").unwrap().as_mapping().unwrap();
-        assert_eq!(dev.get("enabled").unwrap().as_bool().unwrap(), false);
+        assert!(!dev.get("enabled").unwrap().as_bool().unwrap());
         // Fields from the system config should be preserved via merge
         assert!(dev.get("name").is_some());
 
@@ -1983,7 +1983,7 @@ extensions:
             .unwrap()
             .as_mapping()
             .unwrap();
-        assert_eq!(custom.get("enabled").unwrap().as_bool().unwrap(), true);
+        assert!(custom.get("enabled").unwrap().as_bool().unwrap());
         assert_eq!(custom.get("type").unwrap().as_str().unwrap(), "stdio");
 
         Ok(())
