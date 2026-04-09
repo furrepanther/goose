@@ -6486,6 +6486,9 @@
             "nullable": true,
             "minimum": 0
           },
+          "enable_thinking": {
+            "type": "boolean"
+          },
           "flash_attention": {
             "type": "boolean",
             "nullable": true
@@ -7747,6 +7750,10 @@
           },
           "session_type": {
             "$ref": "#/components/schemas/SessionType"
+          },
+          "thread_id": {
+            "type": "string",
+            "nullable": true
           },
           "total_tokens": {
             "type": "integer",
